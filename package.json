@@ -1,0 +1,26 @@
+{
+  "name": "backlogapi",
+  "version": "1.0.0",
+  "description": "API that will provide information to the Backlog App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "backlog"
+  ],
+  "author": "Adilson Alves Mattos",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.13.2",
+    "base64url": "^3.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mongodb": "^7.0.0",
+    "mongoose": "^9.0.2",
+    "nxapi": "^1.6.1",
+    "psn-api": "^2.17.0",
+    "uuid": "^13.0.0"
+  }
+}
