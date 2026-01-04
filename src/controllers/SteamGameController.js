@@ -4,7 +4,7 @@ const GameSchema = require("../models/GameSchema");
 const connectDB = require("../config/DbClient");
 
 
-exports.SteamPlayerInfo = async (req, res) => {
+exports.getPlayerSummary = async (req, res) => {
     try {
         const data = await SteamService.getPlayerSummary();
         
