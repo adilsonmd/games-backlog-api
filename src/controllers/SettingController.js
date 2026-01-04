@@ -1,13 +1,9 @@
 // src/controllers/PsnGameController.js
 const SettingService = require('../services/SettingService');
-const {connectDB} = require('../config/DbClient');
 
 exports.getAll = async (req, res) => {
     try {
-        await connectDB();
-
         const response = await SettingService.getAll();
-
 
         res.status(200).json(response);
     }
@@ -19,8 +15,6 @@ exports.getAll = async (req, res) => {
 
 exports.getById = async (req, res) => {
     try {
-        await connectDB();
-
         const response = await SettingService.getById(req.params.id);
 
         res.status(200).json(response);
@@ -33,8 +27,6 @@ exports.getById = async (req, res) => {
 
 exports.create = async(req, res) => {
     try {
-        await connectDB();
-
         await SettingService.create(req.body);
         res.status(201).json({});
     }
@@ -46,8 +38,6 @@ exports.create = async(req, res) => {
 
 exports.update = async(req, res) => {
     try {
-        await connectDB();
-
         const response  = await SettingService.update(req.params.id, req.body);
         if (!response)
             res.status(404).json({erro: "Setting não encontrada"});
@@ -62,7 +52,6 @@ exports.update = async(req, res) => {
 
 exports.getSetting = async(req, res) => {
     try {
-        await connectDB();
         const response = await SettingService.getSetting(req.params.key);
 
         res.status(200).json(response);

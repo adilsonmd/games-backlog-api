@@ -23,3 +23,18 @@ exports.create = async (req, res) => {
         res.status(400).json({ erro: "Erro ao cadastrar comentário. " + error });
     }   
 };
+
+exports.delete = async (req, res) => {
+    try {
+        const comentarioId = req.params.comentarioId;
+        await connectDB();
+        const comentarioDeletado = await ComentarioSchema.findByIdAndDelete(comentarioId).exec();
+
+        if (!comentarioDeletado) {
+            return res.status(404).json({ erro: "Comentário não encontrado." });
+        }
+        res.status(200).json({ mensagem: "Comentário deletado com sucesso." });
+    } catch (error) {
+        res.status(400).json({ erro: "Erro ao deletar comentário. " + error });
+    }
+};
