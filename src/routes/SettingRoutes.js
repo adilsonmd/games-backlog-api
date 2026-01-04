@@ -9,4 +9,6 @@ router.get('/:id', SettingController.getById);
 router.post('/', SettingController.create);
 router.put('/:id', SettingController.update);
 
+router.get('/get/:key', SettingController.getSetting);
+
 module.exports = router;

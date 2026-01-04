@@ -1,5 +1,5 @@
 const GameSchema = require('../models/GameSchema');
-const {connectDB} = require('../config/DbClient')
+const { connectDB } = require('../config/DbClient')
 
 exports.getAll = async (req, res) => {
     try {
@@ -11,26 +11,26 @@ exports.getAll = async (req, res) => {
         console.log("[GameController] busca jogos. q=" + q);
 
         await connectDB();
-        
+
         let queryMongo = {};
-        
+
         // Supondo que 'q' seja seu req.query.titulo ou similar
         if (q && q.trim() !== "") {
             let tempQ = q; // Usar uma variável temporária para não sujar o original se precisar
 
-            if (tempQ.includes('steam:') && tempQ.includes('psn:')) {
-                queryMongo= { $or: [ { steam_id: { $ne: null } }, { psn_id: { $ne: null } } ] };
-                tempQ = tempQ.replace('steam:', '').trim();
-                tempQ = tempQ.replace('psn:', '').trim();
+
+            if (tempQ.includes('switch:')) {
+                queryMongo.plataformaAdquirida = { $in: ["SWITCH"] };
+                tempQ = tempQ.replace('switch:', '').trim();
             }
-            
+
             else if (tempQ.includes('steam:')) {
-                queryMongo.steam_id = { $ne: null };
+                queryMongo.plataformaAdquirida = { $in: ["PC"] };
                 tempQ = tempQ.replace('steam:', '').trim();
             }
 
             else if (tempQ.includes('psn:')) {
-                queryMongo.psn_id = { $ne: null };
+                queryMongo.plataformaAdquirida = { $in: ["PS5"] };
                 tempQ = tempQ.replace('psn:', '').trim();
             }
 
@@ -42,17 +42,16 @@ exports.getAll = async (req, res) => {
         }
         console.log(`[GameController] Listando jogos. queryMongo=${JSON.stringify(queryMongo)} Page: ${page} Limit: ${limit}`);
 
-        const response = 
+        const response =
             await GameSchema
                 .find(queryMongo)
-                .skip(page*limit)
+                .skip(page * limit)
                 .limit(limit)
                 .sort({ name: 1 })
                 .exec();
 
         const total = await GameSchema.countDocuments();
 
-        console.log(response);
         let json = {
             games: response,
             pageInfo: {
@@ -103,5 +102,46 @@ exports.update = async (req, res) => {
         res.status(200).json(game);
     } catch (error) {
         res.status(500).json({ erro: "Erro ao cadastrar jogo" });
+    }
+};
+
+exports.getWishlist = async (req, res) => {
+    try {
+        await connectDB();
+
+        const response = await GameSchema.aggregate([
+            {
+                $match: { statusCompra: 'Wishlist' }
+            },
+            {
+                $lookup: {
+                    from: "images",
+                    let: { game_id: "$_id" }, // Define a variável do ID do jogo
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        { $eq: ["$gameId", "$$game_id"] }, // Join pelo ID
+                                        { $eq: ["$isCover", true] }        // Filtra apenas a capa
+                                    ]
+                                }
+                            }
+                        },
+                        { $limit: 1 } // Garante que trará apenas uma imagem no array
+                    ],
+                    as: "fotos"
+                }
+            },
+            {
+                $sort: { titulo: 1 }
+            }
+        ]);
+
+        console.log(`[GameController] Lista Wishlist: ${response.length} jogos encontrados.`);
+
+        res.status(200).json(response);
+    } catch (error) {
+        res.status(400).json({ erro: "Erro ao listar jogos da wishlist", details: error });
     }
 };

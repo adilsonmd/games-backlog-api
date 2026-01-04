@@ -59,3 +59,15 @@ exports.update = async(req, res) => {
         console.log("Erro ao criar settings", erro);
     }
 }
+
+exports.getSetting = async(req, res) => {
+    try {
+        await connectDB();
+        const response = await SettingService.getSetting(req.params.key);
+
+        res.status(200).json(response);
+    } catch (erro) {
+        res.status(500).json({erro: "Erro ao buscar setting", stack: erro });
+        console.log("Erro ao buscar setting", erro);
+    }
+}
