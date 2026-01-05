@@ -9,7 +9,11 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 
-app.use('/api', routes);
+// De:
+//app.use('/api', routes);
+
+// Para:
+app.use('/', routes);
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log('Servidor pronto');
