@@ -1,12 +1,12 @@
 const axios = require('axios'); // Importe o Axios
 require('dotenv').config();
 
-const BASE_URL = "http://api.steampowered.com";
-const API_KEY = process.env.STEAM_API_KEY;
 const STEAM_ID = process.env.STEAM_ID;
+const API_KEY = process.env.STEAM_API_KEY;
+const BASE_URL = "http://api.steampowered.com";
 
 // http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=XXXXXXXXXXXXXXXXX&steamid=76561197960434622&format=json
-async function GetOwnedGames(){
+exports.GetOwnedGames = async () => {
     try {
         // 1. Monta a URL completa para a chamada
         const url = `${BASE_URL}/IPlayerService/GetOwnedGames/v0001/`;
@@ -15,7 +15,8 @@ async function GetOwnedGames(){
         const params = {
             key: API_KEY,
             steamid: STEAM_ID,
-            include_appinfo: true
+            include_appinfo: true,
+            include_extended_appinfo: false,
         };
         
         // 3. Faz a requisição GET
@@ -33,7 +34,7 @@ async function GetOwnedGames(){
 }
 
 // http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?appid=440&key=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&steamid=76561197972495328
-async function getPlayerSummary() {
+exports.getPlayerSummary = async () => {
     try {
         // 1. Monta a URL completa para a chamada
         
@@ -42,7 +43,7 @@ async function getPlayerSummary() {
         // 2. Define os parâmetros da query (mais limpo que concatenar na URL)
         const params = {
             key: API_KEY,
-            steamids: STEAM_ID
+            steamids: STEAM_ID,
         };
         
         // 3. Faz a requisição GET
@@ -58,7 +59,21 @@ async function getPlayerSummary() {
     }
 }
 
-module.exports = {
-    GetOwnedGames, // ou simplesmente GetOwnedGames (shorthand)
-    getPlayerSummary,
-};
+exports.getRecentPlayedGame = async () => {
+    try {
+        const url = `${BASE_URL}/IPlayerService/GetRecentlyPlayedGames/v0001/`;
+
+        const params = {
+            count: 3,
+            key: API_KEY,
+            steamids: STEAM_ID,
+        };
+
+        const response = await axios.get(url, { params: params });
+        
+        return response.data; 
+    }
+    catch (error) {
+        console.error("Erro ao buscar dados de jogos recentes. ", error.message);
+    }
+}

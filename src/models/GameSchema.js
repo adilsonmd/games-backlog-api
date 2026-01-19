@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const GameSchema = new mongoose.Schema({
+    igdb_id: {type: Number, required: false },
     steam_id: {type: Number, required: false },
     psn_id: {type: String, required: false },
     titulo: {type: String, required: true, },
@@ -12,7 +13,8 @@ const GameSchema = new mongoose.Schema({
     ultimaSessao: {type: Date, default: null},
     midiaFisica: {type: Boolean, default: false},
     midiaDigital: {type: Boolean, default: false},
-
+    namorada_flag: {type: Boolean, default: false},
+    created_at: {type: Date, default: Date.now}
 });
 
 module.exports = mongoose.model('Game', GameSchema);

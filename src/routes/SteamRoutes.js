@@ -1,11 +1,12 @@
-// src/routes/jogoRoutes.js
+// src/routes/SteamRoutes.js
 const express = require('express');
 const router = express.Router();
+
 const SteamGameController = require('../controllers/SteamGameController');
 
 // Define as rotas para "jogos"
-router.get('/player',SteamGameController.getPlayerSummary);   
 router.get('/games', SteamGameController.SteamAllGames);  
-router.post('/games', SteamGameController.SteamCreateGame);
+router.get('/player', SteamGameController.getPlayerSummary);   
+router.get('/recent-games', SteamGameController.getRecentPlayedGame);
 
 module.exports = router;

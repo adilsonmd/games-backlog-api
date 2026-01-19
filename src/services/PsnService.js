@@ -1,10 +1,10 @@
-const { 
+const {
     exchangeNpssoForAccessCode,
     exchangeAccessCodeForAuthTokens,
     exchangeRefreshTokenForAuthTokens,
 
     getBasicPresence,
-    makeUniversalSearch, 
+    makeUniversalSearch,
     getRecentlyPlayedGames,
     getProfileFromUserName,
     getProfileFromAccountId,
@@ -13,7 +13,6 @@ const {
 
 require('dotenv').config();
 
-const { connectDB } = require("../config/DbClient");
 const Token = require('../models/TokenSchema');
 
 // Token gerado e obtido.
@@ -21,7 +20,7 @@ const Token = require('../models/TokenSchema');
 // Abrir link: https://ca.account.sony.com/api/v1/ssocookie
 
 async function getValidToken() {
-    await connectDB();
+
     const tokenDoc = await Token.findOne({ provider: 'PSN' });
 
     if (tokenDoc && tokenDoc.authorization) {
@@ -32,7 +31,7 @@ async function getValidToken() {
 
             // Atribuímos o resultado a uma constante primeiro
             const refreshedAuth = await exchangeRefreshTokenForAuthTokens(tokenDoc.authorization.refreshToken);
-            
+
             await Token.findOneAndUpdate(
                 { provider: 'PSN' },
                 { authorization: refreshedAuth }, // Usamos a constante criada acima
@@ -51,7 +50,7 @@ async function getValidToken() {
     // Atualiza no banco
     await Token.findOneAndUpdate(
         { provider: 'PSN' },
-        { 
+        {
             authorization
         },
         { upsert: true }
@@ -61,14 +60,14 @@ async function getValidToken() {
 }
 
 // http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=XXXXXXXXXXXXXXXXX&steamid=76561197960434622&format=json
-async function UniversalSearch(searchTerm){
+async function UniversalSearch(searchTerm) {
     try {
 
         const authorization = await getValidToken();
 
         const response = await makeUniversalSearch(authorization, searchTerm, 'SocialAllAccounts');
 
-       return response;
+        return response;
     } catch (error) {
         console.error("Erro ao buscar dados da PSN:", error.message);
         console.error(error);
@@ -79,12 +78,12 @@ async function UniversalSearch(searchTerm){
 
 
 async function getPlayerFromAccountId(accountId = 'me') {
-     try {
-        
+    try {
+
         const authorization = await getValidToken();
         const response = await getProfileFromAccountId(authorization, accountId);
-        
-        return response; 
+
+        return response;
     } catch (error) {
         console.error("Erro ao buscar User stats for game da PSN:", error.message);
         // Em caso de erro, você pode lançar uma exceção ou retornar um objeto de erro
@@ -95,11 +94,11 @@ async function getPlayerFromAccountId(accountId = 'me') {
 // Informações basicas
 async function getPlayerPresence(accountId = 'me') {
     try {
-        
+
         const authorization = await getValidToken();
-        const response = await getBasicPresence(authorization, accountId );
-        
-        return response; 
+        const response = await getBasicPresence(authorization, accountId);
+
+        return response;
     } catch (error) {
         console.error("Erro ao buscar User stats for game da PSN:", error.message);
         // Em caso de erro, você pode lançar uma exceção ou retornar um objeto de erro
@@ -139,8 +138,8 @@ async function getOwnedGames(limit = 25, page = 0, sortBy = 'ACTIVE_DATE', sortD
 
 
 
-        const response = await getPurchasedGames(authorization, { size: limit, start: page*limit, sortBy: sortBy, sortDirection: sortDirection });
-        
+        const response = await getPurchasedGames(authorization, { size: limit, start: page * limit, sortBy: sortBy, sortDirection: sortDirection });
+
         return response
     } catch (error) {
         console.log("Erro ao obter jogos adquiridos. ", error);
