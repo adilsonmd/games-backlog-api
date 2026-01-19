@@ -1,10 +1,8 @@
 // src/controllers/SteamGameController.js
 const SteamService = require('../services/SteamService');
-const GameSchema = require("../models/GameSchema");
-const connectDB = require("../config/DbClient");
 
 
-exports.getPlayerSummary = async (req, res) => {
+const getPlayerSummary = async (req, res) => {
     try {
         const data = await SteamService.getPlayerSummary();
         
@@ -18,7 +16,7 @@ exports.getPlayerSummary = async (req, res) => {
     }
 };
 
-exports.SteamAllGames = async (req, res) => {
+const SteamAllGames = async (req, res) => {
     // Uso direto do objeto:
     try {
         const data = await SteamService.GetOwnedGames(); 
@@ -32,23 +30,25 @@ exports.SteamAllGames = async (req, res) => {
     }
 };
 
-exports.SteamCreateGame = async (req, res) => {
+const getRecentPlayedGame = async (req, res) => {
     try {
+        const data = await SteamService.getRecentPlayedGame();
 
-        connectDB();
+        if (!data) {
+            res.status(404).json({error: "Dados não encontrados"});
+        }
 
-        const newGame = new GameSchema(req.body);
-        console.log("Teste: ", newGame);
-        await newGame.save();
-
-        res.status(201).json({});
-    }
-    catch (erro) {
+        res.status(200).json(data);
+    } catch (error) {
         res.status(500).json({
-            error: "Ocorreu um erro ao cadastrar jogo.",
-            details: erro.message,
+            error: "Ocorreu um erro ao buscar jogos recentes",
+            details: error.message
         })
     }
-};
+}
 
-
+module.exports = {
+    getPlayerSummary,
+    SteamAllGames,
+    getRecentPlayedGame
+}

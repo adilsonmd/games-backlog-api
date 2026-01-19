@@ -1,7 +1,6 @@
 const GameSchema = require('../models/GameSchema');
-const { connectDB } = require('../config/DbClient')
 
-exports.getAll = async (req, res) => {
+const getAll = async (req, res) => {
     try {
         const page = Number(req.query.page) || 0;
         const limit = Number(req.query.limit) || 25;
@@ -9,8 +8,6 @@ exports.getAll = async (req, res) => {
         const q = req.query.q || null;
 
         console.log("[GameController] busca jogos. q=" + q);
-
-        await connectDB();
 
         let queryMongo = {};
 
@@ -40,8 +37,6 @@ exports.getAll = async (req, res) => {
                 queryMongo.titulo = { $regex: tempQ, $options: 'i' };
             }
         }
-        console.log(`[GameController] Listando jogos. queryMongo=${JSON.stringify(queryMongo)} Page: ${page} Limit: ${limit}`);
-
         const response =
             await GameSchema
                 .find(queryMongo)
@@ -67,10 +62,8 @@ exports.getAll = async (req, res) => {
     }
 };
 
-exports.getById = async (req, res) => {
+const getById = async (req, res) => {
     try {
-        await connectDB();
-
         const response = await GameSchema.findById(req.params.id);
 
         res.status(200).json(response);
@@ -79,10 +72,8 @@ exports.getById = async (req, res) => {
     }
 };
 
-exports.create = async (req, res) => {
+const create = async (req, res) => {
     try {
-        await connectDB();
-
         const novoJogo = await GameSchema.create(req.body);
         res.status(201).json(novoJogo);
     } catch (error) {
@@ -90,10 +81,8 @@ exports.create = async (req, res) => {
     }
 };
 
-exports.update = async (req, res) => {
+const update = async (req, res) => {
     try {
-        await connectDB();
-
         const game = await GameSchema.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
 
         if (!game) {
@@ -105,10 +94,8 @@ exports.update = async (req, res) => {
     }
 };
 
-exports.getWishlist = async (req, res) => {
+const getWishlist = async (req, res) => {
     try {
-        await connectDB();
-
         const response = await GameSchema.aggregate([
             {
                 $match: { statusCompra: 'Wishlist' }
@@ -145,3 +132,11 @@ exports.getWishlist = async (req, res) => {
         res.status(400).json({ erro: "Erro ao listar jogos da wishlist", details: error });
     }
 };
+
+module.exports = {
+    getAll,
+    getById,
+    create,
+    update,
+    getWishlist,
+}

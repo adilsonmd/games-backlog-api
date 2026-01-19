@@ -1,7 +1,7 @@
 // src/controllers/PsnGameController.js
 const PsnService = require('../services/PsnService');
 
-exports.UniversalSearch = async (req, res) => {
+const UniversalSearch = async (req, res) => {
     try {
         const data = await PsnService.UniversalSearch(req.query.searchTerm);
         
@@ -15,7 +15,7 @@ exports.UniversalSearch = async (req, res) => {
     }
 };
 
-exports.GetPlayerById = async (req, res) => {
+const GetPlayerById = async (req, res) => {
     try {
         const accountId = req.params.userId;
 
@@ -28,7 +28,7 @@ exports.GetPlayerById = async (req, res) => {
     }
 }
 
-exports.GetPlayerByIdBasic = async (req, res) => {
+const GetPlayerByIdBasic = async (req, res) => {
     try {
         const accountId = req.params.userId;
 
@@ -41,7 +41,7 @@ exports.GetPlayerByIdBasic = async (req, res) => {
     }
 }
 
-exports.GetPlayerByUsername = async (req, res) => {
+const GetPlayerByUsername = async (req, res) => {
     try {
         const username = req.params.username;
 
@@ -54,7 +54,7 @@ exports.GetPlayerByUsername = async (req, res) => {
     }
 }
 
-exports.GetRecentGames = async (req, res) => {
+const GetRecentGames = async (req, res) => {
     try {
         const limit = req.query.limit;
         const categories = req.query.categories;
@@ -78,7 +78,7 @@ exports.GetRecentGames = async (req, res) => {
     }
 }
 
-exports.GetOwnedGames = async (req, res) => {
+const GetOwnedGames = async (req, res) => {
     try {
         let limit = 24;
         let page = 0;
@@ -96,4 +96,13 @@ exports.GetOwnedGames = async (req, res) => {
     catch (error) {
         res.status(500).json(error);
     }
+}
+
+module.exports = {
+    UniversalSearch,
+    GetPlayerById,
+    GetPlayerByIdBasic,
+    GetPlayerByUsername,
+    GetRecentGames,
+    GetOwnedGames,
 }

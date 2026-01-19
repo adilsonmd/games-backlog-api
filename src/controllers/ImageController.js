@@ -1,10 +1,7 @@
-const {connectDB} = require('../config/DbClient');
 const ImageSchema = require('../models/ImageSchema');
 
-exports.getImagesForGame = async (req, res) => {
+const getImagesForGame = async (req, res) => {
     try {
-        await connectDB();
-
         const gameId = req.params.id;
         console.log(`[ImageController] Buscando imagens para o jogo ID: ${gameId}`); 
     } catch (error) {
@@ -12,9 +9,8 @@ exports.getImagesForGame = async (req, res) => {
     }
 };
 
-exports.create = async (req, res) => {
+const create = async (req, res) => {
     try {
-        await connectDB(); 
         const novaImagem = await ImageSchema.create(req.body);
         res.status(201).json(novaImagem);
     } catch (error) {
@@ -22,9 +18,8 @@ exports.create = async (req, res) => {
     }   
 };
 
-exports.delete = async (req, res) => {
+const remove = async (req, res) => {
     try {
-        await connectDB();
         const imagemRemovida = await ImageSchema.findByIdAndDelete(req.params.id);
 
         if (!imagemRemovida) {
@@ -35,3 +30,9 @@ exports.delete = async (req, res) => {
         res.status(500).json({ erro: "Erro ao remover imagem. " + error });
     }
 };
+
+module.exports = {
+    getImagesForGame,
+    create,
+    remove
+}

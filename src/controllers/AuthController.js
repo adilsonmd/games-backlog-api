@@ -2,7 +2,7 @@ const UserSchema = require('../models/UserSchema');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-exports.register = async (req, res) => {
+const register = async (req, res) => {
     const { username, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     
@@ -11,7 +11,7 @@ exports.register = async (req, res) => {
     res.status(201).json({ message: "Usuário criado!" });
 };
 
-exports.login = async (req, res) => {
+const login = async (req, res) => {
     const { username, password } = req.body;
     const user = await UserSchema.findOne({ username });
 
@@ -22,3 +22,8 @@ exports.login = async (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
     res.json({ token });
 };
+
+module.exports = {
+    register,
+    login
+}

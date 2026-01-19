@@ -1,7 +1,7 @@
 // src/controllers/PsnGameController.js
 const SettingService = require('../services/SettingService');
 
-exports.getAll = async (req, res) => {
+const getAll = async (req, res) => {
     try {
         const response = await SettingService.getAll();
 
@@ -13,7 +13,7 @@ exports.getAll = async (req, res) => {
     }
 }
 
-exports.getById = async (req, res) => {
+const getById = async (req, res) => {
     try {
         const response = await SettingService.getById(req.params.id);
 
@@ -25,7 +25,7 @@ exports.getById = async (req, res) => {
     }
 }
 
-exports.create = async(req, res) => {
+const create = async(req, res) => {
     try {
         await SettingService.create(req.body);
         res.status(201).json({});
@@ -36,7 +36,7 @@ exports.create = async(req, res) => {
     }
 }
 
-exports.update = async(req, res) => {
+const update = async(req, res) => {
     try {
         const response  = await SettingService.update(req.params.id, req.body);
         if (!response)
@@ -50,7 +50,7 @@ exports.update = async(req, res) => {
     }
 }
 
-exports.getSetting = async(req, res) => {
+const getSetting = async(req, res) => {
     try {
         const response = await SettingService.getSetting(req.params.key);
 
@@ -59,4 +59,12 @@ exports.getSetting = async(req, res) => {
         res.status(500).json({erro: "Erro ao buscar setting", stack: erro });
         console.log("Erro ao buscar setting", erro);
     }
+}
+
+module.exports = {
+    getAll,
+    getById,
+    create,
+    update,
+    getSetting,
 }

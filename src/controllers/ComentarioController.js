@@ -1,10 +1,8 @@
 const ComentarioSchema = require('../models/ComentarioSchema');
-const {connectDB} = require('../config/DbClient');
 
-exports.getComentario = async (req, res) => {
+const getComentario = async (req, res) => {
     try {
         const gameId = req.params.gameId;
-        await connectDB();
 
         const comentarios = await ComentarioSchema.find({ gameId: gameId }).sort({ createdAt: -1 }).exec();
 
@@ -13,9 +11,8 @@ exports.getComentario = async (req, res) => {
         res.status(400).json({ erro: "Erro ao listar comentários do jogo. " + error });
     }   
 };
-exports.create = async (req, res) => {
+const create = async (req, res) => {
     try {
-        await connectDB();  
         const novoComentario = await ComentarioSchema.create(req.body);
         res.status(201).json(novoComentario);
     }
@@ -24,10 +21,10 @@ exports.create = async (req, res) => {
     }   
 };
 
-exports.delete = async (req, res) => {
+const remove = async (req, res) => {
     try {
         const comentarioId = req.params.comentarioId;
-        await connectDB();
+        
         const comentarioDeletado = await ComentarioSchema.findByIdAndDelete(comentarioId).exec();
 
         if (!comentarioDeletado) {
@@ -38,3 +35,9 @@ exports.delete = async (req, res) => {
         res.status(400).json({ erro: "Erro ao deletar comentário. " + error });
     }
 };
+
+module.exports = {
+    getComentario,
+    create,
+    remove
+}
