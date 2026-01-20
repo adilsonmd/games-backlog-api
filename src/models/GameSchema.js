@@ -14,6 +14,7 @@ const GameSchema = new mongoose.Schema({
     midiaFisica: {type: Boolean, default: false},
     midiaDigital: {type: Boolean, default: false},
     namorada_flag: {type: Boolean, default: false},
+    favorito_flag: {type: Boolean, default: false},
     created_at: {type: Date, default: Date.now}
 });
 
