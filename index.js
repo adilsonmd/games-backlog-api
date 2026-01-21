@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors'); // 1. Importa o CORS
 const routes = require('./src/routes')
+
 const { disconnectDB } = require('./src/config/DbClient');
 
 const app = express();
@@ -9,11 +10,12 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 
-// De:
-//app.use('/api', routes);
-
-// Para:
-app.use('/', routes);
+if (process.env.NODE_ENV === 'production'){
+    app.use('/', routes);
+}
+else {
+    app.use('/api', routes);
+}
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log('Servidor pronto');
