@@ -30,6 +30,28 @@ const SteamAllGames = async (req, res) => {
     }
 };
 
+const SteamGameById = async (req, res) => {
+    try {
+        const id = req.params.id;
+        if (!id) {
+            res.status(400).json({ erro: "ID não é valido"});
+        }
+
+        const data = await SteamService.GetOwnedGameById(id);
+
+        if (data)
+            res.status(200).json(data);
+        else 
+            res.status(404).json({erro: "Jogos não encontrados"});
+    }
+    catch (error) {
+        res.status(500).json({
+            error: "Ocorreu um erro ao buscar jogo por ID",
+            details: error.message
+        })
+    }
+}
+
 const getRecentPlayedGame = async (req, res) => {
     try {
         const data = await SteamService.getRecentPlayedGame();
@@ -50,5 +72,6 @@ const getRecentPlayedGame = async (req, res) => {
 module.exports = {
     getPlayerSummary,
     SteamAllGames,
+    SteamGameById,
     getRecentPlayedGame
 }

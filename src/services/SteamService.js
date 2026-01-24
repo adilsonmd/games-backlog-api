@@ -33,6 +33,35 @@ exports.GetOwnedGames = async () => {
     }
 }
 
+
+exports.GetOwnedGameById = async (id) => {
+    try {
+        // 1. Monta a URL completa para a chamada
+        const url = `${BASE_URL}/IPlayerService/GetOwnedGames/v0001/`;
+        
+        // 2. Define os parâmetros da query (mais limpo que concatenar na URL)
+        const params = {
+            key: API_KEY,
+            steamid: STEAM_ID,
+            include_appinfo: true,
+            include_extended_appinfo: true,
+            appids_filter: id // AQUI QUE FAZ O FILTRO PARA UM UNICO JOGO.
+        };
+        
+        // 3. Faz a requisição GET
+        const response = await axios.get(url, { params: params });
+        
+        // 4. Retorna os dados que vieram na resposta
+        return response.data; 
+
+    } catch (error) {
+        console.error("Erro ao buscar jogos da Steam:", error.message);
+        console.error(error);
+        // Em caso de erro, você pode lançar uma exceção ou retornar um objeto de erro
+        throw new Error("Falha na comunicação com a API Steam.");
+    }
+}
+
 // http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?appid=440&key=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&steamid=76561197972495328
 exports.getPlayerSummary = async () => {
     try {
