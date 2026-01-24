@@ -7,14 +7,11 @@ const getAll = async (req, res) => {
 
         const q = req.query.q || null;
 
-        console.log("[GameController] busca jogos. q=" + q);
-
         let queryMongo = {};
 
         // Supondo que 'q' seja seu req.query.titulo ou similar
         if (q && q.trim() !== "") {
             let tempQ = q; // Usar uma variável temporária para não sujar o original se precisar
-
 
             if (tempQ.includes('switch:')) {
                 queryMongo.plataformaAdquirida = { $in: ["SWITCH"] };
@@ -37,6 +34,16 @@ const getAll = async (req, res) => {
                 queryMongo.titulo = { $regex: tempQ, $options: 'i' };
             }
         }
+
+        if (req.query.midia) {
+            let midia = req.query.midia;
+
+            if (midia == 'digital')
+                queryMongo.midiaDigital = true;
+            else if (midia == 'fisica')
+                queryMongo.midiaFisica = true;
+        }
+
         const response =
             await GameSchema
                 .find(queryMongo)
@@ -132,8 +139,6 @@ const getWishlist = async (req, res) => {
             }
         ]);
 
-        console.log(`[GameController] Lista Wishlist: ${response.length} jogos encontrados.`);
-
         res.status(200).json(response);
     } catch (error) {
         res.status(400).json({ erro: "Erro ao listar jogos da wishlist", details: error });
@@ -162,57 +167,53 @@ const removeDuplicates = async (req, res) => {
         result.forEach(doc => {
             // Remove o primeiro ID do array (ele será mantido no banco)
             // Os IDs restantes são duplicatas e vão para a lista de remoção
-            const [, ...duplicatas] = doc.ids; 
+            const [, ...duplicatas] = doc.ids;
             idsParaDeletar.push(...duplicatas);
         });
 
         if (idsParaDeletar.length > 0) {
             const deleteResult = await GameSchema.deleteMany({ _id: { $in: idsParaDeletar } });
-            console.log(`${deleteResult.deletedCount} duplicados removidos com sucesso!`);
 
-            res.status(200).json({message: "Sucesso"});
+            res.status(200).json({ message: "Sucesso" });
         } else {
-            res.status(204).json({message: "Nenhum duplicado encontrado. "});
+            res.status(204).json({ message: "Nenhum duplicado encontrado. " });
         }
 
     } catch (error) {
-        res.status(500).json({erro: "Erro ao remover", detail: error.message});
+        res.status(500).json({ erro: "Erro ao remover", detail: error.message });
     }
 }
 
 const getDashboardData = async (req, res) => {
     try {
         const estatisticas = await GameSchema.aggregate([
-        {
-            $facet: {
-            totalJogos: [{ $count: "count" }],
-            finalizados: [
-                { $match: { status: "Finalizado" } },
-                { $count: "count" }
-            ],
-            wishlist: [
-                { $match: { statusCompra: "Wishlist" } },
-                { $count: "count" }
-            ]
+            {
+                $facet: {
+                    totalJogos: [{ $count: "count" }],
+                    finalizados: [
+                        { $match: { status: "Finalizado" } },
+                        { $count: "count" }
+                    ],
+                    wishlist: [
+                        { $match: { statusCompra: "Wishlist" } },
+                        { $count: "count" }
+                    ]
+                }
+            },
+            {
+                $project: {
+                    total: { $ifNull: [{ $arrayElemAt: ["$totalJogos.count", 0] }, 0] },
+                    finalizados: { $ifNull: [{ $arrayElemAt: ["$finalizados.count", 0] }, 0] },
+                    wishlist: { $ifNull: [{ $arrayElemAt: ["$wishlist.count", 0] }, 0] }
+                }
             }
-        },
-        {
-            $project: {
-            total: { $ifNull: [{ $arrayElemAt: ["$totalJogos.count", 0] }, 0] },
-            finalizados: { $ifNull: [{ $arrayElemAt: ["$finalizados.count", 0] }, 0] },
-            wishlist: { $ifNull: [{ $arrayElemAt: ["$wishlist.count", 0] }, 0] }
-            }
-        }
         ]);
 
         if (estatisticas) {
-            console.log(estatisticas);
-            console.log(estatisticas[0]);
-            
             res.status(200).json(estatisticas[0]);
         }
         else {
-            res.status(400).json({erro: "Não encontrados"});
+            res.status(400).json({ erro: "Não encontrados" });
         }
     }
     catch (error) {
@@ -251,15 +252,15 @@ const getPlayingGames = async (req, res) => {
                 $sort: { titulo: 1 }
             }
         ]);
-        
-        if (!response || response.length == 0){
-            res.status(400).json({erro: "Não encontrado"});
+
+        if (!response || response.length == 0) {
+            res.status(400).json({ erro: "Não encontrado" });
         }
         else {
             res.status(200).json(response);
         }
     } catch (error) {
-        res.status(500).json({erro: "Nao foi possivel obter", detail: error.message});
+        res.status(500).json({ erro: "Nao foi possivel obter", detail: error.message });
     }
 }
 module.exports = {
