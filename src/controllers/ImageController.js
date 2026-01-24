@@ -4,6 +4,15 @@ const getImagesForGame = async (req, res) => {
     try {
         const gameId = req.params.id;
         console.log(`[ImageController] Buscando imagens para o jogo ID: ${gameId}`); 
+
+        const image = await ImageSchema.find({gameId: gameId});
+
+        if (image){
+            res.status(200).json(image);
+        }
+        else {
+            res.status(400).json({erro: "Não encontrado"});
+        }
     } catch (error) {
         res.status(400).json({ erro: "Erro ao listar imagens do jogo. " + error });
     }
