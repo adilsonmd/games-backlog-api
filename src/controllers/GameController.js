@@ -5,7 +5,7 @@ const getAll = async (req, res) => {
         const page = Number(req.query.page) || 0;
         const limit = Number(req.query.limit) || 25;
 
-        const q = req.query.q || null;
+        const q = req.query.search || null;
 
         let queryMongo = {};
 
@@ -44,6 +44,16 @@ const getAll = async (req, res) => {
                 queryMongo.midiaFisica = true;
         }
 
+        if (req.query.status) {            
+            queryMongo.status = req.query.status;
+        }
+
+        if (req.query.statusCompra) {            
+            queryMongo.statusCompra = req.query.statusCompra;
+        }
+
+
+        console.log("Query: ", queryMongo);
         const response =
             await GameSchema
                 .find(queryMongo)
@@ -63,6 +73,8 @@ const getAll = async (req, res) => {
                 totalCount: total,
             }
         }
+
+        console.log(json);
         res.status(200).json(json);
     } catch (error) {
         res.status(400).json({ erro: "Erro ao listar jogos. " + error });
