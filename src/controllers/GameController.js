@@ -72,7 +72,6 @@ const getAll = async (req, res) => {
             }
         }
 
-        console.log(json.pageInfo);
         res.status(200).json(json);
     } catch (error) {
         res.status(400).json({ erro: "Erro ao listar jogos. " + error });
