@@ -57,7 +57,7 @@ const getAll = async (req, res) => {
                 .find(queryMongo)
                 .skip(page * limit)
                 .limit(limit)
-                .sort({ name: 1 })
+                .sort({ titulo: 1 })
                 .exec();
 
         const total = await GameSchema.countDocuments(queryMongo);
