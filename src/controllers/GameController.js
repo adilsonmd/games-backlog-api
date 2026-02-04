@@ -52,8 +52,6 @@ const getAll = async (req, res) => {
             queryMongo.statusCompra = req.query.statusCompra;
         }
 
-
-        console.log("Query: ", queryMongo);
         const response =
             await GameSchema
                 .find(queryMongo)
@@ -62,7 +60,7 @@ const getAll = async (req, res) => {
                 .sort({ name: 1 })
                 .exec();
 
-        const total = await GameSchema.countDocuments();
+        const total = await GameSchema.countDocuments(queryMongo);
 
         let json = {
             games: response,
@@ -74,7 +72,7 @@ const getAll = async (req, res) => {
             }
         }
 
-        console.log(json);
+        console.log(json.pageInfo);
         res.status(200).json(json);
     } catch (error) {
         res.status(400).json({ erro: "Erro ao listar jogos. " + error });
