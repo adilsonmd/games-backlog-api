@@ -4,6 +4,8 @@ const getAll = async (req, res) => {
     try {
         const page = Number(req.query.page) || 0;
         const limit = Number(req.query.limit) || 25;
+        const orderby = req.query.orderby || 'titulo';
+        const direction = req.query.direction || 'asc';
 
         const q = req.query.search || null;
 
@@ -52,12 +54,15 @@ const getAll = async (req, res) => {
             queryMongo.statusCompra = req.query.statusCompra;
         }
 
+        let sort = {  [orderby]: direction=='asc' ? 1 : -1 };
+
+        console.log("objeto sort", sort)
         const response =
             await GameSchema
                 .find(queryMongo)
                 .skip(page * limit)
                 .limit(limit)
-                .sort({ titulo: 1 })
+                .sort(sort)
                 .exec();
 
         const total = await GameSchema.countDocuments(queryMongo);
