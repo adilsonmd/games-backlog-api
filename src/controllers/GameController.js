@@ -56,7 +56,6 @@ const getAll = async (req, res) => {
 
         let sort = {  [orderby]: direction=='asc' ? 1 : -1 };
 
-        console.log("objeto sort", sort)
         const response =
             await GameSchema
                 .find(queryMongo)
