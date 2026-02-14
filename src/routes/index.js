@@ -9,6 +9,7 @@ const IGDBRoutes = require('./IGDBRoutes');
 const SteamRoutes = require('./SteamRoutes');
 const ImageRoutes = require('./ImageRoutes');
 const SettingRoutes = require('./SettingRoutes');
+const ColecaoRoutes = require('./ColecaoRoutes');
 const ComentarioRoutes = require('./ComentarioRoutes');
 
 const authMiddleware = require('../middlewares/auth');
@@ -23,6 +24,7 @@ router.use('/auth/', AuthRoutes);
 router.use('/games/', authMiddleware, GameRoutes);
 router.use('/images/', authMiddleware, ImageRoutes);
 router.use('/setting/', authMiddleware, SettingRoutes);
+router.use('/colecao/', authMiddleware, ColecaoRoutes);
 router.use('/comentarios/', authMiddleware, ComentarioRoutes);
 
 // Rotas de terceiros
