@@ -6,7 +6,7 @@ const GameController = require('../controllers/GameController');
 // Define as rotas para "jogos"
 router.get('/dashboard/', GameController.getDashboardData);
 router.get('/wishlist/', GameController.getWishlist);   
-router.get('/playing/', GameController.getPlayingGames);   
+router.get('/status/', GameController.getByStatus);   
 
 router.get('/', GameController.getAll);   
 router.get('/:id', GameController.getById);  

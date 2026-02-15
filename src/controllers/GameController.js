@@ -234,12 +234,18 @@ const getDashboardData = async (req, res) => {
     }
 }
 
-const getPlayingGames = async (req, res) => {
+const getByStatus = async (req, res) => {
     try {
+        console.log("Buscando por status");
+        const statusCompra = req.query?.statusCompra ?? 'Adquirido';
+        const status = req.query?.status ?? 'Jogando';
+
+        console.log("statusCompra", statusCompra);
+        console.log("status", status);
 
         const response = await GameSchema.aggregate([
             {
-                $match: { statusCompra: 'Adquirido', status: 'Jogando' }
+                $match: { statusCompra: statusCompra, status: status }
             },
             {
                 $lookup: {
@@ -268,8 +274,10 @@ const getPlayingGames = async (req, res) => {
 
         if (!response || response.length == 0) {
             res.status(400).json({ erro: "Não encontrado" });
+            console.log("Nao Achamos", response);
         }
         else {
+            console.log("Achamos", response);
             res.status(200).json(response);
         }
     } catch (error) {
@@ -284,5 +292,5 @@ module.exports = {
     getWishlist,
     removeDuplicates,
     getDashboardData,
-    getPlayingGames,
+    getByStatus,
 }
