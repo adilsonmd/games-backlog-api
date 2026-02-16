@@ -272,7 +272,7 @@ const getByStatus = async (req, res) => {
             res.status(400).json({ erro: "Não encontrado" });
         }
         else {
-            console.log("Achamos", response);
+            res.status(200).json(response);
         }
     } catch (error) {
         res.status(500).json({ erro: "Nao foi possivel obter", detail: error.message });
