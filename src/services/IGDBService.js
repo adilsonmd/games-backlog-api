@@ -47,11 +47,12 @@ async function authenticateWithTwitch() {
 }
 
 
-exports.searchGame = async (gameName, limit) => {
+exports.searchMainGame = async (gameName) => {
     try {
         const authData = await authenticateWithTwitch();
-
-        const query = `fields id, name, platforms; where name = "${gameName}"; limit ${limit};`;
+        const query = `search "${gameName}"; 
+            fields id, name, artworks.image_id, platforms.abbreviation; 
+            where game_type = 0 & version_parent = null;`;
         
         const response = await axios.post(baseURL + '/games', query, {
             headers: {
@@ -81,27 +82,6 @@ exports.getGamePlayTime = async (gameId) => {
         });
         return response.data;
     } catch (error) {
-        console.error('Error fetching game play time from IGDB:', error.response ? error.response.data : error.message);
-        throw error;
-    }
-}
-
-exports.getPlatforms = async(platforms) => {
-    try {
-        const authData = await authenticateWithTwitch();
-
-        const query = `fields id,abbreviation; where id = (${platforms.join(',')});`;
-
-        const response = await axios.post(baseURL + '/platforms', query, {
-            headers: {
-                'Client-ID': process.env.TWITCH_CLIENT_ID,
-                'Authorization': `Bearer ${authData.access_token}`
-            }
-        });
-
-        return response.data;
-    }
-    catch (error) {
         console.error('Error fetching game play time from IGDB:', error.response ? error.response.data : error.message);
         throw error;
     }

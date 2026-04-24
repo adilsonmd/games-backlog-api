@@ -15,7 +15,7 @@ const searchGame = async (req, res) => {
             return res.status(404).json({ erro: "Jogo não encontrado." });
         }
 
-        const igdbGame = await IGDBService.searchGame(gameTitle, limit);
+        const igdbGame = await IGDBService.searchMainGame(gameTitle);
         
         console.log("Resposta IGDB: ", igdbGame);
         if (!igdbGame || igdbGame?.length === 0) {
