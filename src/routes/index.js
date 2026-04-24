@@ -2,15 +2,15 @@
 const express = require('express');
 const router = express.Router();
 
-const PsnRoutes = require('./PsnRoutes');
-const AuthRoutes = require('./AuthRoutes');
-const GameRoutes = require('./GameRoutes');
-const IGDBRoutes = require('./IGDBRoutes');
-const SteamRoutes = require('./SteamRoutes');
-const ImageRoutes = require('./ImageRoutes');
-const SettingRoutes = require('./SettingRoutes');
-const ColecaoRoutes = require('./ColecaoRoutes');
-const ComentarioRoutes = require('./ComentarioRoutes');
+const PsnRoutes = require('../modules/psn/psn.routes');
+const AuthRoutes = require('../modules/auth/auth.routes');
+const GameRoutes = require('../modules/game/game.routes');
+const IGDBRoutes = require('../modules/igdb/igdb.routes');
+const SteamRoutes = require('../modules/steam/steam.routes');
+const ImageRoutes = require('../modules/image/image.routes');
+const SettingRoutes = require('../modules/setting/setting.routes');
+const ColecaoRoutes = require('../modules/colecao/colecao.routes');
+const ComentarioRoutes = require('../modules/comentario/comentario.routes');
 
 const authMiddleware = require('../middlewares/auth');
 const setupDatabase = require('../middlewares/setupDatabase');
