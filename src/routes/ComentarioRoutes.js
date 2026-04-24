@@ -1,1 +1,0 @@
-module.exports = require('../modules/comentario/comentario.routes');
