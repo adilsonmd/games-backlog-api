@@ -4,8 +4,6 @@ const SettingSchema = require("../../models/SettingSchema");
 async function getAll() {
     try {
         const allSettings = await SettingSchema.find();
-
-        console.log(allSettings);
         return allSettings;
     } catch (error) {
         console.log(error);
