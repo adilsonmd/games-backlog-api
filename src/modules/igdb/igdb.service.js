@@ -2,6 +2,7 @@ require('dotenv').config();
 const axios = require('axios');
 
 const TokenSchema = require('../../models/TokenSchema');
+const SettingService = require('../setting/setting.service.js');
 
 const baseURL = 'https://api.igdb.com/v4';
 
@@ -47,12 +48,12 @@ async function authenticateWithTwitch() {
     }
 }
 
-exports.searchMainGame = async (gameName) => {
+exports.searchMainGame = async (gameName, filterArtwork = true) => {
     try {
         const authData = await authenticateWithTwitch();
         const query = `search "${gameName}";
-            fields id, name, artworks.image_id, platforms.abbreviation;
-            where game_type = 0 & version_parent = null;`;
+            fields id, name, artworks.image_id, artworks.url, artworks.artwork_type, platforms.abbreviation;
+            where game_type = 0 & version_parent = null; `;
 
         const response = await axios.post(baseURL + '/games', query, {
             headers: {
@@ -61,7 +62,13 @@ exports.searchMainGame = async (gameName) => {
             }
         });
 
-        return response.data;
+        let gameData = response.data;
+
+        if (filterArtwork) {
+            gameData.artworks = await getGameCover(gameData);
+        }
+
+        return gameData;
     } catch (error) {
         console.error('Error fetching game from IGDB:', error.response ? error.response.data : error.message);
         throw error;
@@ -90,3 +97,36 @@ exports.getGamePlayTime = async (gameId) => {
         throw error;
     }
 };
+
+/**
+ * Estrutura do JSON:  
+ * {
+        "id": 110916,
+        "image_id": "ar2dl0",
+        "url": "//images.igdb.com/igdb/image/upload/t_thumb/ar2dl0.jpg",
+        "artwork_type": 1
+    },
+ */
+getGameCover = async (gameData) => {
+    try {
+        const baseImageUrl = await SettingService.getSetting("IGDB_IMAGE_URL");
+
+        if (!baseImageUrl) {
+            throw new Error("Setting IGDB_IMAGE_URL não encontrado");
+            return;
+        }
+
+        if (!gameData) {
+            console.log("gameData invalido", gameData);
+        }
+
+        let newGameData = gameData[0].artworks
+            .filter((x) => x.artwork_type == 9)
+            .map((x) => x.url = baseImageUrl.replace("${hash}", x.image_id));
+
+        return newGameData;
+    } catch (error) {
+        console.error('Erro ao manipular dados da artwork', error.message);
+        throw error;
+    }
+}
