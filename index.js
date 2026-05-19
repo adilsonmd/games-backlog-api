@@ -5,7 +5,10 @@ const routes = require('./src/routes')
 const { disconnectDB } = require('./src/config/DbClient');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: 'https://games.athomushub.com.br', // Origem exata do seu Frontend
+    credentials: true // ESSENCIAL para permitir que os cookies do Authelia trafeguem
+}));
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
