@@ -1,3 +1,4 @@
+/** DEPRECATED - Agora autenticação é feita por Conteiner docker "Authelia" junto com LLDAP */
 const UserSchema = require('../../models/UserSchema');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');

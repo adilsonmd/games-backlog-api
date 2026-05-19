@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 const PsnRoutes = require('../modules/psn/psn.routes');
-const AuthRoutes = require('../modules/auth/auth.routes');
+//const AuthRoutes = require('../modules/auth/auth.routes');
 const GameRoutes = require('../modules/game/game.routes');
 const IGDBRoutes = require('../modules/igdb/igdb.routes');
 const SteamRoutes = require('../modules/steam/steam.routes');
@@ -18,7 +18,7 @@ const setupDatabase = require('../middlewares/setupDatabase');
 // Agrupa as rotas por prefixo
 router.use(setupDatabase);
 
-router.use('/auth/', AuthRoutes);
+//router.use('/auth/', AuthRoutes);
 
 // Rotas principais 
 router.use('/games/', authMiddleware, GameRoutes);
