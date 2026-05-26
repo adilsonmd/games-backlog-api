@@ -6,7 +6,7 @@ const { disconnectDB } = require('./src/config/DbClient');
 
 const app = express();
 
-const whiteListCors = ['https://games.athomushub.com.br', 'https://locker.athomushub.com.br', 'http://localhost:5173/'];
+const whiteListCors = ['https://games.athomushub.com.br', 'https://locker.athomushub.com.br'];
 const corsOptions = {
   origin: function (origin, callback) {
     // O '!origin' permite requisições server-to-server ou ferramentas como Postman (onde o origin é undefined)
