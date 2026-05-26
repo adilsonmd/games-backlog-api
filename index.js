@@ -10,7 +10,7 @@ const whiteListCors = ['https://games.athomushub.com.br', 'https://locker.athomu
 const corsOptions = {
   origin: function (origin, callback) {
     // O '!origin' permite requisições server-to-server ou ferramentas como Postman (onde o origin é undefined)
-    if (!origin || whitelist.indexOf(origin) !== -1) {
+    if (!origin || whiteListCors.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
       callback(new Error('Bloqueado pelo CORS: Origem não permitida.'));
