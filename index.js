@@ -5,10 +5,22 @@ const routes = require('./src/routes')
 const { disconnectDB } = require('./src/config/DbClient');
 
 const app = express();
-app.use(cors({
-    origin: 'https://games.athomushub.com.br', // Origem exata do seu Frontend
-    credentials: true // ESSENCIAL para permitir que os cookies do Authelia trafeguem
-}));
+
+const whiteListCors = ['https://games.athomushub.com.br', 'https://locker.athomushub.com.br', 'http://localhost:5173/'];
+const corsOptions = {
+  origin: function (origin, callback) {
+    // O '!origin' permite requisições server-to-server ou ferramentas como Postman (onde o origin é undefined)
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Bloqueado pelo CORS: Origem não permitida.'));
+    }
+  }
+};
+
+// Aplica o CORS com as opções configuradas para todas as rotas
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
