@@ -37,12 +37,10 @@ app.listen(PORT, '0.0.0.0', () => {
 });
 
 // Captura o sinal de interrupção (Ctrl + C)
-if (import.meta.process.env.NODE_ENV == "dev") {
-  process.on('SIGINT', async () => {
-    await disconnectDB();
-    process.exit(0);
-  });
-}
+process.on('SIGINT', async () => {
+  await disconnectDB();
+  process.exit(0);
+});
 
 // Captura o sinal de encerramento (usado por serviços de hospedagem)
 process.on('SIGTERM', async () => {
