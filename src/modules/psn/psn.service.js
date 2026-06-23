@@ -1,4 +1,4 @@
-const {
+import {
     exchangeNpssoForAccessCode,
     exchangeAccessCodeForAuthTokens,
     exchangeRefreshTokenForAuthTokens,
@@ -8,11 +8,11 @@ const {
     getProfileFromUserName,
     getProfileFromAccountId,
     getPurchasedGames
-} = require('psn-api');
+} from 'psn-api';
 
-require('dotenv').config();
+import 'dotenv/config';
 
-const Token = require('../../models/TokenSchema');
+import Token from '../../models/TokenSchema.js';
 
 async function getValidToken() {
     // Busca "cache" do token no MongoDB
@@ -123,7 +123,7 @@ async function getOwnedGames(limit = 25, page = 0, sortBy = 'ACTIVE_DATE', sortD
     }
 }
 
-module.exports = {
+export default {
     UniversalSearch,
     getPlayerFromAccountId,
     getPlayerPresence,

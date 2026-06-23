@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const SettingSchema = new mongoose.Schema({
     key: { type: String, required: true, unique: true },
@@ -6,4 +6,4 @@ const SettingSchema = new mongoose.Schema({
     description: { type: String }
 });
 
-module.exports = mongoose.model('Setting', SettingSchema);
+export default mongoose.model('Setting', SettingSchema);

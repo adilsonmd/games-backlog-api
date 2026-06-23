@@ -1,5 +1,5 @@
-const { connectDB } = require("../../config/DbClient");
-const SettingSchema = require("../../models/SettingSchema");
+import { connectDB } from "../../config/DbClient.js";
+import SettingSchema from "../../models/SettingSchema.js";
 
 async function getAll() {
     try {
@@ -49,7 +49,7 @@ async function getSetting(key) {
     }
 }
 
-module.exports = {
+export default {
     getAll,
     getById,
     create,

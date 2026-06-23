@@ -1,4 +1,4 @@
-const SettingService = require('./setting.service');
+import SettingService from './setting.service.js';
 
 const getAll = async (req, res) => {
     try {
@@ -54,7 +54,7 @@ const getSetting = async (req, res) => {
     }
 };
 
-module.exports = {
+export default {
     getAll,
     getById,
     create,

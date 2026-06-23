@@ -1,4 +1,4 @@
-const ImageSchema = require('../../models/ImageSchema');
+import ImageSchema from '../../models/ImageSchema.js';
 
 const getImagesForGame = async (req, res) => {
     try {
@@ -39,7 +39,7 @@ const remove = async (req, res) => {
     }
 };
 
-module.exports = {
+export default {
     getImagesForGame,
     create,
     remove

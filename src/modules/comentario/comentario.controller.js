@@ -1,4 +1,4 @@
-const ComentarioSchema = require('../../models/ComentarioSchema');
+import ComentarioSchema from '../../models/ComentarioSchema.js';
 
 const getComentario = async (req, res) => {
     try {
@@ -36,7 +36,7 @@ const remove = async (req, res) => {
     }
 };
 
-module.exports = {
+export default {
     getComentario,
     create,
     remove

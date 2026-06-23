@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const ComentarioController = require('./comentario.controller');
+import ComentarioController from './comentario.controller.js';
 
 router.get('/:gameId', ComentarioController.getComentario);
 router.post('/', ComentarioController.create);
 
-module.exports = router;
+export default router;

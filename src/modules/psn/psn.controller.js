@@ -1,4 +1,4 @@
-const PsnService = require('./psn.service');
+import PsnService from './psn.service.js';
 
 const UniversalSearch = async (req, res) => {
     try {
@@ -92,7 +92,7 @@ const GetOwnedGames = async (req, res) => {
     }
 };
 
-module.exports = {
+export default {
     UniversalSearch,
     GetPlayerById,
     GetPlayerByIdBasic,

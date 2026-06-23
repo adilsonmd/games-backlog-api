@@ -1,11 +1,11 @@
-const axios = require('axios');
-require('dotenv').config();
+import axios from 'axios';
+import 'dotenv/config';
 
 const STEAM_ID = process.env.STEAM_ID;
 const API_KEY = process.env.STEAM_API_KEY;
 const BASE_URL = "http://api.steampowered.com";
 
-exports.GetOwnedGames = async () => {
+export const GetOwnedGames = async () => {
     try {
         const url = `${BASE_URL}/IPlayerService/GetOwnedGames/v0001/`;
 
@@ -25,7 +25,7 @@ exports.GetOwnedGames = async () => {
     }
 };
 
-exports.GetOwnedGameById = async (id) => {
+export const GetOwnedGameById = async (id) => {
     try {
         const url = `${BASE_URL}/IPlayerService/GetOwnedGames/v0001/`;
 
@@ -46,7 +46,7 @@ exports.GetOwnedGameById = async (id) => {
     }
 };
 
-exports.getPlayerSummary = async () => {
+export const getPlayerSummary = async () => {
     try {
         const url = `${BASE_URL}/ISteamUser/GetPlayerSummaries/v0001/`;
 
@@ -63,7 +63,7 @@ exports.getPlayerSummary = async () => {
     }
 };
 
-exports.getRecentPlayedGame = async () => {
+export const getRecentPlayedGame = async () => {
     try {
         const url = `${BASE_URL}/IPlayerService/GetRecentlyPlayedGames/v0001/`;
 
@@ -78,4 +78,11 @@ exports.getRecentPlayedGame = async () => {
     } catch (error) {
         console.error("Erro ao buscar dados de jogos recentes. ", error.message);
     }
+};
+
+export default {
+    GetOwnedGames,
+    GetOwnedGameById,
+    getPlayerSummary,
+    getRecentPlayedGame
 };

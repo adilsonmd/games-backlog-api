@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const IGDBController = require('./igdb.controller');
+import IGDBController from './igdb.controller.js';
 
 router.get('/game', IGDBController.searchGame);
 router.get('/play-time/:id', IGDBController.getPlayTimes);
 
-module.exports = router;
+export default router;

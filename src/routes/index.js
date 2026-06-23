@@ -1,34 +1,34 @@
 // src/routes/index.js
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
-const AuthRoutes = require('../modules/auth/auth.routes');
-const PsnRoutes = require('../modules/psn/psn.routes');
-const GameRoutes = require('../modules/game/game.routes');
-const IGDBRoutes = require('../modules/igdb/igdb.routes');
-const SteamRoutes = require('../modules/steam/steam.routes');
-const ImageRoutes = require('../modules/image/image.routes');
-const SettingRoutes = require('../modules/setting/setting.routes');
-const ColecaoRoutes = require('../modules/colecao/colecao.routes');
-const ComentarioRoutes = require('../modules/comentario/comentario.routes');
+import AuthRoutes from '../modules/auth/auth.routes.js';
+import PsnRoutes from '../modules/psn/psn.routes.js';
+import GameRoutes from '../modules/game/game.routes.js';
+import IGDBRoutes from '../modules/igdb/igdb.routes.js';
+import SteamRoutes from '../modules/steam/steam.routes.js';
+import ImageRoutes from '../modules/image/image.routes.js';
+import SettingRoutes from '../modules/setting/setting.routes.js';
+import ColecaoRoutes from '../modules/colecao/colecao.routes.js';
+import ComentarioRoutes from '../modules/comentario/comentario.routes.js';
 
-const authMiddleware = require('../middlewares/auth');
-const setupDatabase = require('../middlewares/setupDatabase');
+import {verifyJWT} from '../middlewares/auth.js';
+import setupDatabase from '../middlewares/setupDatabase.js';
 
 // Agrupa as rotas por prefixo
 router.use(setupDatabase);
 
 // Rotas principais 
 router.use('/auth/', AuthRoutes);
-router.use('/games/', authMiddleware, GameRoutes);
-router.use('/images/', authMiddleware, ImageRoutes);
-router.use('/setting/', authMiddleware, SettingRoutes);
-router.use('/colecao/', authMiddleware, ColecaoRoutes);
-router.use('/comentarios/', authMiddleware, ComentarioRoutes);
+router.use('/games/', verifyJWT, GameRoutes);
+router.use('/images/', verifyJWT, ImageRoutes);
+router.use('/setting/', verifyJWT, SettingRoutes);
+router.use('/colecao/', verifyJWT, ColecaoRoutes);
+router.use('/comentarios/', verifyJWT, ComentarioRoutes);
 
 // Rotas de terceiros
-router.use('/psn/', authMiddleware, PsnRoutes);
-router.use('/igdb/', authMiddleware, IGDBRoutes);
-router.use('/steam/', authMiddleware, SteamRoutes);
+router.use('/psn/', verifyJWT, PsnRoutes);
+router.use('/igdb/', verifyJWT, IGDBRoutes);
+router.use('/steam/', verifyJWT, SteamRoutes);
 
-module.exports = router;
+export default router;

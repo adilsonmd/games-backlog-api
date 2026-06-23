@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const GameController = require('./game.controller');
+import GameController from './game.controller.js';
 
 // Define as rotas para jogos
 router.get('/dashboard/', GameController.getDashboardData);
@@ -12,4 +12,4 @@ router.post('/', GameController.create);
 router.put('/:id', GameController.update);
 router.delete('/', GameController.removeDuplicates); // Comentar depois
 
-module.exports = router;
+export default router;

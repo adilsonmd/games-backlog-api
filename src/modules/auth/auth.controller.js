@@ -1,7 +1,9 @@
 /** DEPRECATED - Agora autenticação é feita por Conteiner docker "Authelia" junto com LLDAP */
-const UserSchema = require('../../models/UserSchema');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+import * as jose from 'jose'
+
+import UserSchema from '../../models/UserSchema.js';
+import bcrypt from 'bcryptjs';
+import { signJWT } from "../../middlewares/auth.js";
 
 const register = async (req, res) => {
     const { username, password } = req.body;
@@ -19,12 +21,13 @@ const login = async (req, res) => {
     if (!user || !(await bcrypt.compare(password, user.password))) {
         return res.status(401).json({ error: "Credenciais inválidas" });
     }
+    
+    const token = signJWT(user._id);
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
     res.json({ token });
 };
 
-module.exports = {
+export default {
     register,
     login
 };

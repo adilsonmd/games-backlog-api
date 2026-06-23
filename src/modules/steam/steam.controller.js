@@ -1,4 +1,4 @@
-const SteamService = require('./steam.service');
+import SteamService from './steam.service.js';
 
 const getPlayerSummary = async (req, res) => {
     try {
@@ -64,7 +64,7 @@ const getRecentPlayedGame = async (req, res) => {
     }
 };
 
-module.exports = {
+export default {
     getPlayerSummary,
     SteamAllGames,
     SteamGameById,

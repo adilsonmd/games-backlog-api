@@ -1,10 +1,10 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const SteamGameController = require('./steam.controller');
+import SteamGameController from './steam.controller.js';
 
 router.get('/games', SteamGameController.SteamAllGames);
 router.get('/games/:id', SteamGameController.SteamGameById);
 router.get('/player', SteamGameController.getPlayerSummary);
 router.get('/recent-games', SteamGameController.getRecentPlayedGame);
 
-module.exports = router;
+export default router;

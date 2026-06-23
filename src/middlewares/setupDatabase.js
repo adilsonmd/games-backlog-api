@@ -1,7 +1,7 @@
-const {connectDB} = require('../config/DbClient');
-const mongoose = require('mongoose');
+import { connectDB } from '../config/DbClient.js';
+import mongoose from 'mongoose';
 
-module.exports = async (req, res, next) => {
+export default async (req, res, next) => {
     await connectDB();
 
     // 0: disconnected, 1: connected, 2: connecting, 3: disconnecting

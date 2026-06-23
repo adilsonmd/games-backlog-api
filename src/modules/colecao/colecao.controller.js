@@ -1,4 +1,4 @@
-const ColecaoSchema = require('../../models/ColecaoSchema');
+import ColecaoSchema from '../../models/ColecaoSchema.js';
 
 const getAll = async (req, res) => {
     try {
@@ -84,7 +84,7 @@ const remove = async (req, res) => {
     }
 };
 
-module.exports = {
+export default {
     getAll,
     getId,
     create,

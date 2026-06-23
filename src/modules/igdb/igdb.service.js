@@ -1,8 +1,8 @@
-require('dotenv').config();
-const axios = require('axios');
+import 'dotenv/config';
+import axios from 'axios';
 
-const TokenSchema = require('../../models/TokenSchema');
-const SettingService = require('../setting/setting.service.js');
+import TokenSchema from '../../models/TokenSchema.js';
+import SettingService from '../setting/setting.service.js';
 
 const baseURL = 'https://api.igdb.com/v4';
 
@@ -48,7 +48,7 @@ async function authenticateWithTwitch() {
     }
 }
 
-exports.searchMainGame = async (gameName, filterArtwork = true) => {
+const searchMainGame = async (gameName, filterArtwork = true) => {
     try {
         const authData = await authenticateWithTwitch();
         const query = `search "${gameName}";
@@ -75,7 +75,7 @@ exports.searchMainGame = async (gameName, filterArtwork = true) => {
     }
 };
 
-exports.getGamePlayTime = async (gameId) => {
+const getGamePlayTime = async (gameId) => {
     try {
         const authData = await authenticateWithTwitch();
 
@@ -107,7 +107,7 @@ exports.getGamePlayTime = async (gameId) => {
         "artwork_type": 1
     },
  */
-getGameCover = async (gameData) => {
+const getGameCover = async (gameData) => {
     try {
         const baseImageUrl = await SettingService.getSetting("IGDB_IMAGE_URL");
 
@@ -129,4 +129,9 @@ getGameCover = async (gameData) => {
         console.error('Erro ao manipular dados da artwork', error.message);
         throw error;
     }
+}
+
+export {
+    searchMainGame,
+    getGamePlayTime,
 }

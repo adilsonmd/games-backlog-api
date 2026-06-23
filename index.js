@@ -1,8 +1,8 @@
-const express = require('express');
-const cors = require('cors'); // 1. Importa o CORS
-const routes = require('./src/routes')
+import express from 'express';
+import cors from 'cors'; // 1. Importa o CORS
+import routes from './src/routes/index.js';
 
-const { disconnectDB } = require('./src/config/DbClient');
+import { disconnectDB } from './src/config/DbClient.js';
 
 const app = express();
 

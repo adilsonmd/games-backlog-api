@@ -3,14 +3,14 @@ const sendSuccess = (res, data, status = 200) => {
 }
 
 const sendBadRequest = (res, mensagem) => {
-    res.status(400).json({status: 'error', message: mensagem})
+    res.status(400).json({ status: 'error', message: mensagem })
 }
 
 const sendError = (res, error, status = 500) => {
     res.status(status).json({ status: 'error', message: error.message })
 }
 
-module.exports = {
+export default {
     sendSuccess,
     sendError
 }

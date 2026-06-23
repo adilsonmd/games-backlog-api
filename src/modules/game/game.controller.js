@@ -1,4 +1,4 @@
-const GameSchema = require('../../models/GameSchema');
+import GameSchema from '../../models/GameSchema.js';
 
 const getAll = async (req, res) => {
     try {
@@ -264,7 +264,7 @@ const getByStatus = async (req, res) => {
     }
 };
 
-module.exports = {
+export default {
     getAll,
     getById,
     create,
