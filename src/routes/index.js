@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 
+const AuthRoutes = require('../modules/auth/auth.routes');
 const PsnRoutes = require('../modules/psn/psn.routes');
 const GameRoutes = require('../modules/game/game.routes');
 const IGDBRoutes = require('../modules/igdb/igdb.routes');
@@ -30,6 +31,7 @@ router.get('/auth', (req, res) => {
 });
 
 // Rotas principais 
+router.use('/auth/', AuthRoutes);
 router.use('/games/', authMiddleware, GameRoutes);
 router.use('/images/', authMiddleware, ImageRoutes);
 router.use('/setting/', authMiddleware, SettingRoutes);
