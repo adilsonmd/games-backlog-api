@@ -18,18 +18,6 @@ const setupDatabase = require('../middlewares/setupDatabase');
 // Agrupa as rotas por prefixo
 router.use(setupDatabase);
 
-router.get('/auth', (req, res) => {
-  const username = req.headers['x-authelia-username'];
-  const email = req.headers['x-authelia-email'];
-
-  if (!username) {
-    return res.status(401).json({ error: 'Não autorizado' });
-  }
-
-  // Devolve os dados para o frontend usar se quiser exibir o nome na tela
-  res.json({ username, email });
-});
-
 // Rotas principais 
 router.use('/auth/', AuthRoutes);
 router.use('/games/', authMiddleware, GameRoutes);
