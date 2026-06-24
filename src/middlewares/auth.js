@@ -1,14 +1,18 @@
 import * as jose from 'jose'
 
-export const verifyJWT = (req, res, next) => {
+export const verifyJWT = async (req, res, next) => {
+    console.log("verificando");
+
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1]; // Padrão "Bearer TOKEN"
     
     if (!token) return res.status(401).json({ error: "Acesso negado" });
     
     try {
-        const verified = jose.jwtVerify(token, process.env.JWT_SECRET);
-        req.user = verified; // Adiciona os dados do usuário na requisição
+        const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+        const { payload, protectedHeader } = await jose.jwtVerify(token, secret);
+
+        req.user = payload;
         next();
     } catch (err) {
         console.log("Token inválido:", err);
@@ -17,17 +21,17 @@ export const verifyJWT = (req, res, next) => {
 }
 
 export const signJWT = async (userId) => {
-     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-    
-     console.log(userId.toString());
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+
      try {
 
          const token = await new jose.SignJWT({})
          .setProtectedHeader({ alg: 'HS256' })
-         .setSubject(userId)
+         .setSubject(userId.toString())
          .setIssuedAt()
          .setExpirationTime('2h')
          .sign(secret);
+
          return token;
          
     } catch (ex) {

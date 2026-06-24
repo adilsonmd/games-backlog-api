@@ -22,9 +22,9 @@ const login = async (req, res) => {
         return res.status(401).json({ error: "Credenciais inválidas" });
     }
     
-    const token = signJWT(user._id);
+    const token = await signJWT(user._id);
 
-    res.json({ token });
+    res.json({token});
 };
 
 export default {
