@@ -5,14 +5,14 @@ import UserSchema from '../../models/UserSchema.js';
 import bcrypt from 'bcryptjs';
 import { signJWT } from "../../middlewares/auth.js";
 
-const register = async (req, res) => {
-    const { username, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
+// const register = async (req, res) => {
+//     const { username, password } = req.body;
+//     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = new UserSchema({ username, password: hashedPassword });
-    await user.save();
-    res.status(201).json({ message: "Usuário criado!" });
-};
+//     const user = new UserSchema({ username, password: hashedPassword });
+//     await user.save();
+//     res.status(201).json({ message: "Usuário criado!" });
+// };
 
 const login = async (req, res) => {
     const { username, password } = req.body;
