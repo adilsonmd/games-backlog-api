@@ -264,6 +264,23 @@ const getByStatus = async (req, res) => {
     }
 };
 
+const getTimelineGames = async (req, res) => {
+    try {
+        const response = await GameSchema.find({
+            statusCompra: "Wishlist",
+            lancamento: { $ne: null }
+        }).sort({ lancamento: 1, titulo: 1 });
+
+        if (!response || response.length == 0) {
+            res.status(400).json({ erro: "Não encontrado" });
+        } else {
+            res.status(200).json(response);
+        }
+    } catch (error) {
+        res.status(500).json({ erro: "Nao foi possivel obter", detail: error.message });
+    }
+}
+
 export default {
     getAll,
     getById,
@@ -272,5 +289,6 @@ export default {
     getWishlist,
     removeDuplicates,
     getDashboardData,
-    getByStatus
+    getByStatus,
+    getTimelineGames
 };

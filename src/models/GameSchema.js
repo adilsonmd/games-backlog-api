@@ -5,6 +5,7 @@ const GameSchema = new mongoose.Schema({
     steam_id: { type: Number, required: false },
     psn_id: { type: String, required: false },
     titulo: { type: String, required: true, },
+    lancamento: { type: Date, default: null }, // Novo
     statusCompra: { type: String, enum: ['Wishlist', 'Pre-venda', 'Adquirido'], default: 'Wishlist' },
     status: { type: String, enum: ['Backlog', 'Jogando', 'Pausado', 'Finalizado', 'Cancelado'], default: 'Backlog' },
     urlImagem: { type: String, default: null },

@@ -6,6 +6,7 @@ import GameController from './game.controller.js';
 router.get('/dashboard/', GameController.getDashboardData);
 router.get('/wishlist/', GameController.getWishlist);
 router.get('/status/', GameController.getByStatus);
+router.get("/timeline/", GameController.getTimelineGames);
 router.get('/', GameController.getAll);
 router.get('/:id', GameController.getById);
 router.post('/', GameController.create);
