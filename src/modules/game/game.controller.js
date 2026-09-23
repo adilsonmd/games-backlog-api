@@ -113,6 +113,29 @@ const update = async (req, res) => {
     }
 };
 
+const remove = async (req, res) => {
+    try {
+        // TODO sanitize
+        const id = req.params?.id ?? "";
+        
+        if (!id) {
+            res.status(404).json({erro: "Parametro 'ID' invalido"});
+        }
+        
+        const response = await GameSchema.findByIdAndDelete(id);
+        
+        if (!response) {
+            res.status(400).json({erro: "Não foi possível remover o jogo"});
+        }
+
+        res.status(204).send();
+
+    } catch (error) {
+        res.status(500).json({ erro: "Erro ao remover o jogo" });
+    }
+}
+
+
 const getWishlist = async (req, res) => {
     try {
         const response = await GameSchema.aggregate([
@@ -286,6 +309,7 @@ export default {
     getById,
     create,
     update,
+    remove,
     getWishlist,
     removeDuplicates,
     getDashboardData,

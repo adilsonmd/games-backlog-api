@@ -11,6 +11,7 @@ router.get('/', GameController.getAll);
 router.get('/:id', GameController.getById);
 router.post('/', GameController.create);
 router.put('/:id', GameController.update);
-router.delete('/', GameController.removeDuplicates); // Comentar depois
+router.delete('/:id', GameController.remove);
+//router.delete('/', GameController.removeDuplicates); // Comentar depois
 
 export default router;
