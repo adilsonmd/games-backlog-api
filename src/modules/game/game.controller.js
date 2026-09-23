@@ -15,13 +15,13 @@ const getAll = async (req, res) => {
             let tempQ = q;
 
             if (tempQ.includes('switch:')) {
-                queryMongo.plataformaAdquirida = { $in: ["SWITCH"] };
+                queryMongo.plataformaAdquirida = { $in: ["SWITCH", "SWITCH2"] };
                 tempQ = tempQ.replace('switch:', '').trim();
             } else if (tempQ.includes('steam:')) {
                 queryMongo.plataformaAdquirida = { $in: ["PC"] };
                 tempQ = tempQ.replace('steam:', '').trim();
             } else if (tempQ.includes('psn:')) {
-                queryMongo.plataformaAdquirida = { $in: ["PS5"] };
+                queryMongo.plataformaAdquirida = { $in: ["PS5", "PS4"] };
                 tempQ = tempQ.replace('psn:', '').trim();
             }
 
